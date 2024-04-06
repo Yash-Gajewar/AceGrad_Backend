@@ -1,7 +1,6 @@
 from fastapi import File, UploadFile, HTTPException
-from typing import List
-import requests
 from pypdf import PdfReader 
+import google.generativeai as genai
 
 
 
@@ -32,4 +31,28 @@ async def getResumeText(file: UploadFile = File(...)):
     page = reader.pages[0] 
     text = page.extract_text() 
     return text
+
+
+genai.configure(api_key="AIzaSyCcNEqSQHwga67N96nU3EV6AFiDCySQxas")
+
+
+model = genai.GenerativeModel('gemini-pro')
+chat = model.start_chat(history=[])
+
+# def get_gemini_response(question):
+#     response =chat.send_message(question,stream=True)
+#     return response
+
+def get_gemini_response(role, company, interviewer, numberOfQuestions, text):
+    result = ""
+    query = f"You are an interviewer of type {interviewer}, of  Company: {company}, taking an interview of a candidate applying for Role: {role}. The following is the Resume of the candidate: {text}. Generate {numberOfQuestions} questions each one after the other with no other data like question number of '*' symbol,  that could potentially be asked to the candidate based on his resume, skills, experience, latest trends, data structures and algorithms, type of interviewer and company motives and company related technologies."
+    response = chat.send_message(query,stream=True)
+    for chunk in response:
+        result += (chunk.text)
+    
+    questions = result.split('\n')
+    questions = [question.strip() for question in questions if question.strip()]
+
+    return questions
+
     
