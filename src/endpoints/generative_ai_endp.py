@@ -1,7 +1,6 @@
-from fastapi import APIRouter, Form, File, UploadFile, HTTPException
+from fastapi import APIRouter, Form, File, UploadFile
 # from src.database.generative_ai_db import upload_files, generate_questions
 from src.database.generative_ai_db import getResumeText, get_gemini_response;
-from src.models.interview_detail_model import Interview_Details
 
 
 router = APIRouter(

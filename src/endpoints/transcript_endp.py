@@ -1,5 +1,5 @@
-from fastapi import APIRouter, File, UploadFile, HTTPException
-from src.database.transcript_operations import extract_transcript;
+from fastapi import APIRouter, Form
+from src.database.transcript_operations import process_transcript
 
 router = APIRouter(
     prefix="/api/transcript",
@@ -8,9 +8,8 @@ router = APIRouter(
 )
 
 
-@router.get("/extract_text/")
-async def get_extracted_text(videoPath: str):
-    extracted_text = extract_transcript(videoPath)
-    return {"text": extracted_text}
-
+@router.post("/process_transcript/")
+async def get_processed_transcript(transcript: str = Form(...)):
+    processed_transcript = process_transcript(transcript)
+    return processed_transcript
 
