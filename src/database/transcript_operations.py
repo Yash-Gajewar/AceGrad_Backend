@@ -1,11 +1,11 @@
 from typing import Dict
 
 # Define lists of non-inclusive, weak, and filler words
-non_inclusive_words = ["I", "me", "my", "mine", "myself", "we", "us", "our", "ours", "ourselves"]
+negative_words = ["I", "me", "my", "mine", "myself", "we", "us", "our", "ours", "ourselves"]
 weak_words = ["very", "just", "maybe", "actually", "really", "somewhat"]
 filler_words = ["um", "uh", "like", "you know", "well", "so"]
 
-def process_transcript(transcript: str) -> Dict[str, int]:
+def process_transcript(transcript: str):
     # Split transcript into words
     words = transcript.split()
 
@@ -14,7 +14,7 @@ def process_transcript(transcript: str) -> Dict[str, int]:
 
     # Initialize dictionaries to store counts and percentages
     counts = {
-        "Non-Inclusive Words": 0,
+        "Negative Words": 0,
         "Weak Words": 0,
         "Filler Words": 0
     }
@@ -27,8 +27,8 @@ def process_transcript(transcript: str) -> Dict[str, int]:
     # Count occurrences of each word category
     for word in words:
         word_lower = word.lower()
-        if word_lower in non_inclusive_words:
-            counts["Non-Inclusive Words"] += 1
+        if word_lower in negative_words:
+            counts["Negative Words"] += 1
         elif word_lower in weak_words:
             counts["Weak Words"] += 1
         elif word_lower in filler_words:
@@ -46,14 +46,14 @@ def process_transcript(transcript: str) -> Dict[str, int]:
 
     # Prepare result dictionary
     result = {
-        "Total Number of Words": total_words,
-        "Non-Inclusive Words": counts["Non-Inclusive Words"],
-        "Non-Inclusive Words Percentage": percentages["Non-Inclusive Words"],
-        "Weak Words": counts["Weak Words"],
-        "Weak Words Percentage": percentages["Weak Words"],
-        "Filler Words": counts["Filler Words"],
-        "Filler Words Percentage": percentages["Filler Words"],
-        "Repetition Percentage of Sentence Starter Words": starter_words_percentage
+        "total_words": total_words,
+        "negative_words": counts["Negative Words"],
+        "negative_words_percentage": percentages["Negative Words"],
+        "weak_words": counts["Weak Words"],
+        "weak_words_percentage": percentages["Weak Words"],
+        "filler_words": counts["Filler Words"],
+        "filler_words_percentage": percentages["Filler Words"],
+        "sentence_starters_percentage": starter_words_percentage
     }
 
     return result

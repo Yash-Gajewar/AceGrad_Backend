@@ -2,8 +2,6 @@ from fastapi import File, UploadFile, HTTPException
 from pypdf import PdfReader 
 import google.generativeai as genai
 
-
-
 # async def upload_files(files: List[UploadFile] = File(...)):
 #     for file in files:
 #         files_data = {'files': (file.filename, file.file, file.content_type)}
@@ -43,16 +41,38 @@ chat = model.start_chat(history=[])
 #     response =chat.send_message(question,stream=True)
 #     return response
 
-def get_gemini_response(role, company, interviewer, numberOfQuestions, text):
+def get_gemini_response(role : str, company : str, interviewer : str, numberOfQuestions : int, text : str, previous_questions : str):
     result = ""
     query = f"You are an interviewer of type {interviewer}, of  Company: {company}, taking an interview of a candidate applying for Role: {role}. The following is the Resume of the candidate: {text}. Generate {numberOfQuestions} questions each one after the other with no other data like question number of '*' symbol,  that could potentially be asked to the candidate based on his resume, skills, experience, latest trends, data structures and algorithms, type of interviewer and company motives and company related technologies."
     response = chat.send_message(query,stream=True)
     for chunk in response:
         result += (chunk.text)
-    
+
     questions = result.split('\n')
     questions = [question.strip() for question in questions if question.strip()]
 
-    return questions
+    previous_questions = previous_questions.split('\n')
+    previous_questions = [question.strip() for question in previous_questions if question.strip()]
 
-    
+    finalQuestions = []
+
+    finalQuestions.extend(previous_questions)
+    finalQuestions.extend(questions)
+         
+    return finalQuestions
+
+
+def get_question_suggestion(role, company, interviewer, text, questions):
+    result = ""
+    for question in questions:
+            query = f"You are an interviewer of type {interviewer}, of  Company: {company}, taking an interview of a candidate applying for Role: {role}. The following is the {question} for the candidate. The follwoing is the resume of the candidate: {text}. Generate only suggestion on how a candidate should answer such question in an interview effectively in a single paragraph of 3-4 lines no other data like question number of '*' symbol. Note the suggestion should be personalized based on the resume of the cadidate."
+            response = chat.send_message(query,stream=True)
+            for chunk in response:
+                result += (chunk.text)
+
+            result += '\$'
+
+    suggestions = result.split('\$')
+    suggestions = [suggestion.strip() for suggestion in suggestions if suggestion.strip()]
+    return suggestions
+
