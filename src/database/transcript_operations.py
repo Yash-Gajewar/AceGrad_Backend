@@ -1,9 +1,76 @@
-from typing import Dict
+# Negative words
+negative_words = [
+    "abysmal",
+    "adverse",
+    "abrasive",
+    "apathetic",
+    "atrocious",
+    "controlling",
+    "dishonest",
+    "impatient",
+    "betrayed",
+    "incompetent",
+    "disappointed",
+    "jealous",
+    "angry",
+    "annoyed",
+    "cruel",
+    "grumpy"
+]
 
-# Define lists of non-inclusive, weak, and filler words
-negative_words = ["I", "me", "my", "mine", "myself", "we", "us", "our", "ours", "ourselves"]
-weak_words = ["very", "just", "maybe", "actually", "really", "somewhat"]
-filler_words = ["um", "uh", "like", "you know", "well", "so"]
+# Weak words
+
+weak_words = [
+    "almost",
+    "apparently",
+    "absolutely",
+    "actually",
+    "a little",
+    "sort of",
+    "used to"
+]
+
+
+filler_words = [
+    "huhh",
+    "uh",
+    "um",
+    "ah",
+    "like",
+    "you know",
+    "okay",
+    "so",
+    "well",
+    "right",
+    "actually",
+    "basically",
+    "essentially",
+    "literally",
+    "totally",
+    "obviously",
+    "seriously",
+    "definitely",
+    "absolutely",
+    "honestly",
+    "just",
+    "you know",
+    "you see",
+    "I mean",
+    "kind of",
+    "sort of",
+    "I guess",
+    "I think",
+    "er",
+    "ohhh",
+    "umm",
+    "ahh",
+    "um",
+    "ah",
+    "aah",
+    "ohhh",
+    "aaahhh"
+
+]
 
 def process_transcript(transcript: str):
     # Split transcript into words
@@ -19,7 +86,7 @@ def process_transcript(transcript: str):
         "Filler Words": 0
     }
     percentages = {
-        "Non-Inclusive Words": 0,
+        "Negative Words": 0,
         "Weak Words": 0,
         "Filler Words": 0
     }
